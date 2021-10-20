@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RentACar.DependencyInjection;
+using RentACar.Interfaces;
+using RentACar.Services;
 
 namespace RentACar
 {
@@ -26,10 +28,14 @@ namespace RentACar
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
             services.AddMvc(options =>
             {
                 options.SuppressAsyncSuffixInActionNames = false;
             });
+            
+            services.AddScoped<IRegisterService, RegisterService>();
+
         }
 
 
@@ -45,6 +51,8 @@ namespace RentACar
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            app.UseRouting();
 
             app.UseEndpoints(endpoints => {
                 endpoints

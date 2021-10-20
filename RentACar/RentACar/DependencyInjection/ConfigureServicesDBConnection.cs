@@ -9,7 +9,7 @@ namespace RentACar.DependencyInjection
     {
         public static IServiceCollection AddDBConnection(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<Context>(
+            services.AddDbContext<RentACarDBContext>(
                 options => options.UseNpgsql(configuration["DBConnection:ConnectionString"]));
 
             return services;
