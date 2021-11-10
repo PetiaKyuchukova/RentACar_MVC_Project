@@ -38,7 +38,7 @@ namespace RentACar
 
             
             services.AddScoped<IRegisterService, RegisterService>();
-            services.AddScoped<IAddCarService, AddCarSevice>();
+            services.AddScoped<ICarService, CarSevice>();
 
 
         }
