@@ -16,20 +16,31 @@ namespace RentACar.Services
         }
         public async Task<Customer> RegisterCustomer(Customer customer)
         {
+            if (customer.Password != customer.RepeatPassword)
+            {
+                throw new Exception("Password mismatch");
+            }
+
             if (!IsDebitCardUnique(customer.DebitCard).Result)
             {
-                throw (new Exception("Debit card is not unique"));
+                throw new Exception("Debit card is not unique");
             }
 
             if (!IsEmailUnique(customer.Mail).Result)
             {
-                throw (new Exception("Email is not unique"));
+                throw new Exception("Email is not unique");
             }
 
             if (!IsPassportNumberUnique(customer.PassportNumber).Result)
             {
-                throw (new Exception("Passport number is not unique"));
+                throw new Exception("Passport number is not unique");
             }
+
+            string salt = "";
+            var hashPassword = Task.Run(() => HashService.GenerateHashString(customer.Password, ref salt));
+
+            customer.Password = await hashPassword;
+            customer.Salt = salt;
 
             await context.Customers.AddAsync(customer);
             await context.SaveChangesAsync();

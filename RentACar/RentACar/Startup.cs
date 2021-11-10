@@ -23,6 +23,8 @@ namespace RentACar
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDBConnection(Configuration);
+            services.AddServices();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
@@ -33,8 +35,11 @@ namespace RentACar
             {
                 options.SuppressAsyncSuffixInActionNames = false;
             });
+
             
             services.AddScoped<IRegisterService, RegisterService>();
+            services.AddScoped<IAddCarService, AddCarSevice>();
+
 
         }
 
